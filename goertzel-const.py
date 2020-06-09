@@ -1,3 +1,7 @@
+# Program for calculating the Goertzel constants of all DTMF frequencies, depending on the sample
+# rate and the size of the samples block.
+# For more information on the algorithm and the constants: https://www.embedded.com/the-goertzel-algorithm/
+
 import math
 
 def generateCoef(sampleRate, blockSize, targetFreq):
@@ -16,4 +20,4 @@ def generateDtmfTonesCoef(sampleRate, blockSize):
         print(str(tone) + " Hz, coef is "+ str(coef))
 
 
-generateDtmfTonesCoef(9615, 100)
+generateDtmfTonesCoef(9615, 100) # (sampleRate = 9615 Hz, blockSize = 100)

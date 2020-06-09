@@ -16,3 +16,5 @@ The code is already commented to facilitate understanding. The heart of the code
 For more information on the algorithm and its application check :
 - https://en.wikipedia.org/wiki/Goertzel_algorithm
 - https://www.embedded.com/the-goertzel-algorithm/
+
+I also created a python script to calculate the [constant coefficients](https://github.com/Estylos/PhoneDTMF/blob/master/phoneDTMF.c#L15) of the DTMF frequencies so as not to slow the microcontroller to this task.
