@@ -2,7 +2,6 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include <avr/power.h>
-#include <math.h>
 #include "simpleUsartTx.h"
 
 #define PHONE_PIN           PC0
@@ -14,7 +13,7 @@
 
 
 const float dtmfCoef[DTMF_FREQUENCIES] = {
-    1.809654104932039,  	// 697 Hz
+    1.809654104932039,      // 697 Hz
     1.7526133600877272,	    // 770 Hz
     1.6886558510040302,	    // 852 Hz
     1.618033988749895,	    // 941 Hz
@@ -42,14 +41,15 @@ ISR(ADC_vect) { // When conversion finished
 }
 
 void initADC(void) {
-	
-	ADMUX |= (1 << REFS0);                  // Reference voltage on AVCC
+
+    ADMUX |= (1 << REFS0);                  // Reference voltage on AVCC
     ADMUX |= PHONE_PIN;                     // Set the analog input
-    ADCSRA |= (1 << ADPS1) | (1 << ADPS2);  // ADC clock prescaler /64 (125 kHz with F_CPU = 8 MHz and ADC need 13 cycles so sample rate = F/125/13 = 9615 kHz)
-	ADCSRA |= (1 << ADEN);                  // Enable ADC
+    ADCSRA |= (1 << ADPS1) | (1 << ADPS2);  // ADC clock prescaler /64 (125 kHz with F_CPU = 8 MHz and ADC need 13 cycles so
+                                            //                                            sample rate = F/125/13 = 9615 kHz)
+    ADCSRA |= (1 << ADEN);                  // Enable ADC
     ADCSRA |= (1 << ADIE);                  // ADC Interrupt Enable
-	ADCSRA |= (1 << ADATE);                 // ADC auto-trigger enable
-	ADCSRA |= (1 << ADSC);                  // ADC start conversion
+    ADCSRA |= (1 << ADATE);                 // ADC auto-trigger enable
+    ADCSRA |= (1 << ADSC);                  // ADC start conversion
 }
 
 void getDtmfMagnitudes(volatile int16_t *samples, uint16_t *magnitudes) {
@@ -96,7 +96,7 @@ uint8_t getLargestMagnitudeIndex(uint16_t *magnitudes, uint8_t len) {
 }
 
 uint8_t detectFalsePositive(uint16_t *magnitudes) { // To avoid returning false data. Can be improved...
-    
+
     for (uint8_t magnitudeIndex = 0 ; magnitudeIndex < DTMF_FREQUENCIES ; magnitudeIndex++) { // To detect only high magnitudes
         if (magnitudes[magnitudeIndex] > THRESHOLD)
             return 1;
@@ -110,12 +110,12 @@ int main(void) {
 
     clock_prescale_set(clock_div_1); // CPU clock to 8 MHz
 
-	initUSART();
-	initADC(); 
+    initUSART();
+    initADC(); 
 
     sei(); // Set the global interrupt flag (interrupts ON)
 
-	while (1) {
+    while (1) {
 
         if (count >= BLOCK_SIZE) {
 
@@ -127,7 +127,7 @@ int main(void) {
              *              +--------+--------+--------+--------+---------+---------+---------+
              *
              *              |----------------------------------| |----------------------------| 
-             *                              rows                            column
+             *                              rows                            columns
              */
 
 
@@ -149,7 +149,7 @@ int main(void) {
             count = 0;
             sei();
         }
-	}
-	
-	return 0;
+    }
+
+    return 0;
 }
